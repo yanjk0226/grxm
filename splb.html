@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>拍卖商品列表</title>
+	</head>
+
+	<body>
+		<div id="splbapp">
+			<div class="forms">
+				<el-form :inline="true" :model="form" class="demo-form-inline">
+					<el-form-item label="名称:">
+						<el-input v-model="form.fname" placeholder="名称"></el-input>
+					</el-form-item>
+					<el-form-item label="描述:">
+						<el-input v-model="form.fms" placeholder="描述"></el-input>
+					</el-form-item>
+					<el-form-item label="起拍价:">
+						<el-input v-model="form.fqpj" placeholder="起拍价"></el-input>
+					</el-form-item>
+					<el-form-item label="开始时间:" style="margin-right:-100px;">
+						<el-col :span="8">
+							<el-date-picker type="date" placeholder="选择日期" v-model="form.fonedate" style="width: 80%;"></el-date-picker>
+						</el-col>
+						<el-col :span="8">
+							<el-time-picker placeholder="选择时间" v-model="form.fonetime" style="width: 80%;"></el-time-picker>
+						</el-col>
+					</el-form-item>
+					<el-form-item label="结束时间:">
+						<el-col :span="8">
+							<el-date-picker type="date" placeholder="选择日期" v-model="form.ftwodate" style="width: 80%;"></el-date-picker>
+						</el-col>
+						<el-col :span="8">
+							<el-time-picker placeholder="选择时间" v-model="form.ftwotime" style="width: 80%;"></el-time-picker>
+						</el-col>
+						<el-button type="primary">查询</el-button>
+					</el-form-item>
+				</el-form>
+			</div>
+			<div class="items">
+				<template>
+					<el-table :data="tables" height="500" border style="width: 100%">
+						<el-table-column prop="name" label="名称" width="200">
+						</el-table-column>
+						<el-table-column prop="ms" label="描述" width="200">
+						</el-table-column>
+						<el-table-column prop="onedatetime" label="开始时间" width="200">
+						</el-table-column>
+						<el-table-column prop="twodatetime" label="结束时间" width="200">
+						</el-table-column>
+						<el-table-column prop="qpj" label="起拍价" width="200">
+						</el-table-column>
+						<el-table-column label="操作">
+							<template slot-scope="temp" >
+							<el-popover placement="top-start" title="竞拍商品信息" width="200" trigger="hover" content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+								<el-button type="success" @click="showView('jp.html')"  slot="reference" plain>竞拍</el-button>
+							</el-popover>
+							</template>
+						</el-table-column>
+					</el-table>
+				</template>
+			</div>
+			<div class="block">
+				<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage4" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
+				</el-pagination>
+			</div>
+		</div>
+		<!-- main end-->
+		</div>
+	</body>
+	<script>
+		var app = new Vue({
+			data: {
+				form: {
+					fname: '',
+					fms: '',
+					fonedate: '',
+					fonetime: '',
+					ftwodate: '',
+					ftwotime: '',
+					fqpj: ''
+				},
+				tables: [{
+					name: '国画',
+					ms: '好好好',
+					onedatetime: '2020-02-26 20:55',
+					twodatetime: '2020-02-27 20:55',
+					qpj: '1000'
+
+				}]
+			},
+			methods: {
+				showView(url) {
+					$('#cnt').load(url);
+				}
+			}
+		}).$mount('#splbapp');
+	</script>
+
+</html>

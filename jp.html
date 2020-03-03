@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.text {
+				font-size: 14px;
+			}
+			
+			.item {
+				margin-bottom: 18px;
+			}
+			
+			.clearfix:before,
+			.clearfix:after {
+				display: table;
+				content: "";
+			}
+			
+			.clearfix:after {
+				clear: both
+			}
+			
+			.box-card {
+				width: 400px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="jpapp">
+			<div class="items" >
+				<el-card class="box-card" style="display: inline-block;">
+					<div slot="header" class="clearfix">
+						<span>拍品详情</span>
+					</div>
+					<div v-for="t in tables" class="text item">
+						<span>{{t.type}}:       </span>
+						<span>{{t.value}}</span>
+					</div>
+				</el-card>
+				<el-row style="display: inline-block;">
+					<el-col>
+						<el-card :body-style="{ padding: '22px' }">
+							<img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+						</el-card>
+					</el-col>
+				</el-row>
+				<el-card class="box-card" style="display: inline-block;">
+			<div slot="header" class="clearfix">
+						<span>出价记录</span>
+					</div>
+			<template>
+					<el-table :data="jp" height="300" border style="width: 100%">
+						<el-table-column prop="name" label="名称" width="100">
+						</el-table-column>
+						<el-table-column prop="datetime" label="结束时间" width="150">
+						</el-table-column>
+						<el-table-column prop="qpj" label="起拍价" width="100">
+						</el-table-column>
+					</el-table>
+				</template>
+			</el-card>
+			</div>
+			<br/>
+			<el-form :inline="true"  class="demo-form-inline">
+				<el-form-item label="出价：">
+					<el-input v-model="money" placeholder="不能低于最高竞拍价"></el-input>
+				</el-form-item>
+				<el-form-item>
+					<el-button type="primary" @click="onSubmit">竞 拍</el-button>
+				</el-form-item>
+				<el-form-item>
+					<el-button type="info">刷 新</el-button>
+				</el-form-item>
+				<el-form-item>
+					<el-button type="warning">返回列表</el-button>
+				</el-form-item>
+			</el-form>
+			<br/>
+		</div>
+	</body>
+	<script>
+		var app = new Vue({
+			data: {
+				money:0,
+				jp:[
+				{
+					name:"列大大",
+					datetime:"2019-4-9 20:20",
+					qpj:"1000"
+					
+				},
+				{
+					name:"空空大大",
+					datetime:"2019-4-9 20:20",
+					qpj:"2000"
+					
+				},
+				{
+					name:"是大大",
+					datetime:"2019-4-9 20:20",
+					qpj:"3000"
+					
+				},
+				{
+					name:"开口大大",
+					datetime:"2019-4-9 20:20",
+					qpj:"4000"
+					
+				}
+				],
+				tables: [{
+						type: '名称',
+						value: '国画',
+
+					},
+					{
+						type: '描述',
+						value: 'sss',
+
+					},
+					{
+						type: '开始时间',
+						value: '2019',
+
+					},
+					{
+						type: '结束时间',
+						value: '2020',
+
+					},
+					{
+						type: '起拍价',
+						value: '1000',
+
+					}
+				]
+			},
+			methods: {
+				showView(url) {
+					$('#cnt').load(url);
+				}
+			}
+		}).$mount('#jpapp');
+	</script>
+
+</html>
