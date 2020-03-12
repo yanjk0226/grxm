@@ -4,9 +4,10 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>在线拍卖系统</title>
-		<link rel="stylesheet" href="css/index.css" />
-		<script type="text/javascript" src="js/vue.js"></script>
-		<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+			<link rel="stylesheet" href="css/index.css" />
+		<script type="text/javascript" src="js/vue.js" ></script>
+		<script type="text/javascript" src="js/jquery-1.12.4.js" ></script>
+		<script type="text/javascript" src="js/jq_ajax_config.js" ></script>
 		<style>
 			.el-header,
 			.el-footer {
@@ -25,7 +26,7 @@
 			<el-container style='height:95vh; border: 1px solid #eee'>
 				<el-header style='height:10%;'>
 					<font color="#FFFFFF"  style="height:100%"><span>在线拍卖系统</span></font>
-					<font color="#FFFFFF" size=3 style="margin-left: 50px;"><b>欢迎<span style="color:red;">admin</span>登陆成功</b>
+					<font color="#FFFFFF" size=3 style="margin-left: 50px;"><b>欢迎<span style="color: red;margin-right: 10px;" v-text="user[0].username">xx</span>登陆成功</b>
 					</font>
 				</el-header>
 				<el-container>
@@ -72,7 +73,9 @@
 	<script type="text/javascript" src="js/index.js"></script>
 	<script>
 		var indexApp = new Vue({
-			data: {},
+			data: {
+				user:{}
+			},
 			methods: {
 				showView(url) {
 					$('#cnt').load(url);
@@ -80,6 +83,11 @@
 			},
 			mounted() {
 				this.showView('splb.html');
+				let _this=this;
+				$.getJSON(`http://127.0.0.1:8080/api/paimai/user`, function(date)
+				{
+					_this.user=date;
+				});
 			}
 		}).$mount('#indxApp');
 	</script>
