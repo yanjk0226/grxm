@@ -33,14 +33,18 @@
 						return callback(new Error('手机号码不能为空'));
 					}
 					setTimeout(() => {
+					    let _this = this;
 						if(!Number.isInteger(value)) {
 							callback(new Error('请输入数字值'));
 						} else {
-							if(value!=110) {//ajax 去数据库中查询
+							$.getJSON(`http://127.0.0.1:8080/api/paimai/phone/${_this.ruleForm.phone}`, function(date) 
+							{
+								if(value!=date) {//ajax 去数据库中查询
 								callback(new Error('手机号码必须一致'));
-							} else {
+								} else {
 								callback();
-							}
+								}
+							});
 						}
 					}, 1000);
 				};
@@ -87,17 +91,32 @@
 			},
 			methods: {
 				submitForm(formName) {
+						let _this = this;
 					this.$refs[formName].validate((valid) => {
 						if(valid) {
-							alert('submit!');
+							$.getJSON(`http://127.0.0.1:8080/api/paimai/wjmm/${_this.ruleForm.pass}/${_this.ruleForm.phone}`, function(date) 
+							{
+								if(date.code == 200) {
+									_this.$message(date.msg);
+									setTimeout(() => {
+          								_this.showView('login.html');
+        							}, 1000);
+									
+								} else {
+									_this.$message(date.msg);
+								}
+							});
 						} else {
-							console.log('error submit!!');
+							this.$alert('请按格式正确填写信息', '系统提示');
 							return false;
 						}
 					});
 				},
 				resetForm(formName) {
 					this.$refs[formName].resetFields();
+				},
+				showView(url) {
+					window.location.href = url;
 				}
 			}
 		}

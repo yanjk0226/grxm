@@ -62,7 +62,7 @@
 							<el-input type="password" v-model="jpz.pwd" autocomplete="off"></el-input>
 						</el-form-item>
 						<el-form-item label="验证码" prop="yzm">
-							<el-input v-model.number="jpz.yzm" style="width:280px;"></el-input>
+							<el-input v-model="jpz.yzm" style="width:280px;"></el-input>
 							<div style="display: inline-block;float:right;">
 								<el-image :src='url1' style="text-align: center;height:40px;"></el-image>
 							</div>
@@ -92,8 +92,8 @@
 			data: {
 				wjmm: false,
 				zhuce: false,
-				url1: "/grxm/css/images/img2.jpg",
-				url2: "/grxm/css/images/img1.jpg",
+				url1: "/grxm/images/img2.jpg",
+				url2: "/grxm/images/img1.jpg",
 				jpz: {
 					name: "",
 					pwd: "",
@@ -155,12 +155,22 @@
 							});
 							//延迟2秒，模拟网络延迟
 							setTimeout(() => {
-								//ajax
+								$.getJSON(`http://127.0.0.1:8080/api/paimai/denglu/${_this.jpz.name}/${_this.jpz.pwd}`, function(date) 
+							{
+								if(date.code == 200) {
+									_this.$message(date.msg);
+									setTimeout(() => {
+          								location.href = "index.html";
+        							}, 500);
+									
+								} else {
+									_this.$message(date.msg);
+								}
+							});
 								loading.close(); //关闭加载块【非常重要】
 								_this.clearData(); //清除数据
 								//session 储存
-								location.href = "index.html";
-							}, 2000);
+							}, 1000);
 						} else {
 							this.$alert('请按格式正确填写信息', '系统提示');
 						}
