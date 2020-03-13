@@ -42,17 +42,18 @@
 								</el-menu-item-group>
 							</el-submenu>
 							
-							
+							<span v-if="user[0].userid==2">
 							<el-submenu index="2">
 							<template slot="title">
 									<i class="el-icon-shopping-bag-1"></i>
 									<span>我的拍卖商品</span>
 							</template>
 								<el-menu-item-group>
-									<el-menu-item index="2-1" @click="showView('add.html')"><i class="el-icon-circle-plus-outline"></i>添加拍卖商品</el-menu-item>
+									<el-menu-item index="2-1" @click="addupdate(null)"><i class="el-icon-circle-plus-outline"></i>添加拍卖商品</el-menu-item>
 									<el-menu-item index="2-2" @click="showView('link.html')"><i class="el-icon-zoom-out"></i>拍卖商品管理</el-menu-item>
 								</el-menu-item-group>
 							</el-submenu>
+							</span>
 							<el-menu-item index="3">
 								<i class="el-icon-setting"></i>
 								<span slot="title">系统设置</span>
@@ -79,6 +80,11 @@
 			methods: {
 				showView(url) {
 					$('#cnt').load(url);
+				},
+				addupdate(pcid) {
+					indexApp.showView('add.html');
+					sessionStorage.setItem('pmpid1', pcid);
+					showView("add.html");
 				}
 			},
 			mounted() {
