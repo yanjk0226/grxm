@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>查询</title>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<link rel="stylesheet" href="css/index.css" />
+		<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+		<script type="text/javascript" src="js/jq_ajax_config.js"></script>
+	</head>
+
+	<body>
+		<div id="flks1">
+			<div class="forms">
+				<el-form :inline="true" :model="qc" class="demo-form-inline">
+					<el-form-item label="厂商:">
+						<el-input v-model="qc.changshang" placeholder="厂商"></el-input>
+					</el-form-item>
+					<el-form-item label="车身结构:">
+						<el-input v-model="qc.cheshenjiegou" placeholder="车身结构"></el-input>
+					</el-form-item>
+					<el-form-item label="面积:">
+						<el-input v-model="qc.mj" placeholder="面积"></el-input>
+					</el-form-item>
+					<el-form-item label="发动机:">
+						<el-input v-model="qc.fdj" placeholder="发动机"></el-input>
+					</el-form-item>
+					<el-form-item label="变速箱:">
+						<el-input v-model="qc.bsx" placeholder="变速箱"></el-input>
+					</el-form-item>
+					<el-form-item label="100s加速时间:">
+						<el-input v-model="qc.jssj" placeholder="100s加速时间"></el-input>
+					</el-form-item>
+					<el-form-item label="最高车速(Km/h):">
+						<el-input v-model="qc.zgcs" placeholder="最高车速(Km/h)"></el-input>
+					</el-form-item>
+					<el-form-item label="油耗:">
+						<el-input v-model="qc.yh" placeholder="油耗"></el-input>
+					</el-form-item>
+					<el-form-item label="整车保修期限（年/不限公里）:">
+						<el-input v-model="qc.bx" placeholder="整车保修期限"></el-input>
+					</el-form-item>
+					<el-form-item label="动力类型:">
+						<el-input v-model="qc.dxlx" placeholder="动力类型"></el-input>
+					</el-form-item>
+					<el-button @click="cx" type="primary">查询</el-button>
+				</el-form>
+			</div>
+			<el-table :default-sort="{prop: 'pdate', order: 'descending'}" :data="pageInfo.list" border :row-class-name="tableRowClassName" @selection-change="changeFun">
+				<el-table-column prop="temp.$index+1" label="序号">
+					<template slot-scope="temp">
+						<p>{{temp.$index+1}}</p>
+					</template>
+				</el-table-column>
+				<el-table-column prop="changshang" label="厂商">
+				</el-table-column>
+				<el-table-column prop="cheshenjiegou" label="车身结构">
+				</el-table-column>
+				<el-table-column prop="mj" label="面积">
+				</el-table-column>
+				<el-table-column prop="fdj" label="发动机">
+				</el-table-column>
+				<el-table-column prop="bsx" label="变速箱">
+				</el-table-column>
+				</el-table-column>
+				<el-table-column prop="jssj" label="100s加速时间" sortable>
+				</el-table-column>
+				</el-table-column>
+				<el-table-column prop="yh" label="油耗" sortable>
+				</el-table-column>
+				</el-table-column>
+				<el-table-column prop="zgcs" label="最高车速(Km/h)" sortable>
+				</el-table-column>
+				<el-table-column prop="bx" label="整车保修期限（年/不限公里）" sortable>
+				</el-table-column>
+				<el-table-column prop="dxlx" label="动力类型">
+				</el-table-column>
+			</el-table>
+			<el-row>
+				<el-col :span="24">
+					<el-pagination v-if="pageInfo.total!=0" :background="true" :pager-count="4" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize" :total="pageInfo.total" :page-sizes="[3,6]" layout="total, sizes, prev, pager, next, jumper">
+					</el-pagination>
+				</el-col>
+			</el-row>
+		</div>
+
+	</body>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script>
+		var flks1 = new Vue({
+			data: {
+				pageInfo: [],
+				qc: {
+					changshang: null,
+					cheshenjiegou: null,
+					mj: null,
+					fdj: null,
+					bsx: null,
+					zgcs: null,
+					jssj: null,
+					yh: null,
+					bx: null,
+					dxlx: null
+				}
+
+			},
+			methods: {
+				g() {
+					let _this = this;
+					_this.qc = {
+						changshang: null,
+						cheshenjiegou: null,
+						mj: null,
+						fdj: null,
+						bsx: null,
+						zgcs: null,
+						jssj: null,
+						yh: null,
+						bx: null,
+						dxlx: null
+					}
+				},
+				cx() {
+					let _this = this;
+					_this.goToPage(1, 3);
+					_this.g();
+				},
+				handleSizeChange(val) {
+					let _this = this;
+					_this.goToPage(this.pageInfo.pageNum, val);
+				},
+				handleCurrentChange(val) {
+					let _this = this;
+					_this.goToPage(val, this.pageInfo.pageSize);
+				},
+				goToPage(n, s) {
+					let _this = this;
+					$.getJSON(`http://127.0.0.1:8080/api/qcs/${n}/${s}/${_this.qc.changshang}/${_this.qc.cheshenjiegou}/${_this.qc.mj}/${_this.qc.fdj}/${_this.qc.bsx}/${_this.qc.zgcs}/${_this.qc.jssj}/${_this.qc.yh}/${_this.qc.bx}/${_this.qc.dxlx}`,
+						function(date2) {
+							_this.pageInfo = date2;
+						});
+				}
+			},
+			mounted() {
+				this.goToPage(1, 3);
+			}
+		}).$mount('#flks1');
+	</script>
+
+</html>
